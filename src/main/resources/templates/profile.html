@@ -1,0 +1,103 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+    <head th:replace="fragments/fragments :: head" lang="en">
+        <title>Hello world</title>
+    </head>
+    <body style="background-color: gray">
+        <nav th:replace="fragments/fragments :: navbar" lang="en"></nav>
+
+        <div class="container" style="margin-top:30px">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="ml-5">
+                        <h1 class="ml-5 pl-5" th:text="${accountName}"/>
+                    </div>
+                    <div th:each="account : ${accounts}">
+
+                        <div th:if="${account.profilePicture != null && account.profilePicture.length  > 0 }">
+                            <!--source on this: https://stackoverflow.com/questions/17772857/how-to-display-jpg-from-db-web-page-->
+                            <!--th:src="@{'data:image/jpg;base64,' + *{T(org.springframework.util.Base64Utils).encodeToString(account.profilePicture)}}"-->
+                            <img th:src="@{'data:image/jpg;base64,' + *{T(org.springframework.util.Base64Utils).encodeToString(account.profilePicture)}}" class="rounded-circle w-75"  />
+
+                            <div class="p-2 ml-5" th:if= "${#authentication.getPrincipal().getUsername()} == ${accountUserName}">
+                                <form class="m-5" th:action="@{/addProfilePic}" method="POST" action="profilePic" enctype="multipart/form-data">
+                                    <label>Change your profile picture?</label>
+                                    <input type="file" name="file"/>
+                                    <input type="submit" class="ml-2 mt-2 btn btn-success"/>
+                                </form>
+
+                                <form class="m-5" th:action="@{/removeProfilePic}" method="POST" action="profilePic" enctype="multipart/form-data">
+                                    <input type="submit" class="ml-2 mt-2 btn btn-danger" value="Remove profile pic?"/>
+                                </form>
+                            </div>
+                        </div>
+                        <div th:if="${account.profilePicture == null || account.profilePicture.length  <= 0}">
+
+                            <img th:src="@{/images/image.png}" class="rounded-circle w-75"/>
+
+                            <div class="p-2 ml-5" th:if= "${#authentication.getPrincipal().getUsername()} == ${accountUserName}">
+
+                                <form class="m-5" th:action="@{/addProfilePic}" method="POST" action="profilePic" enctype="multipart/form-data">
+                                    <label>Change your default picture?</label>
+                                    <input type="file" name="file"/>
+                                    <input type="submit" class="ml-2 mt-2 btn btn-success"/>
+                                </form>
+                            </div>
+                        </div>
+
+
+
+                    </div>
+                    <div th:if= "${#authentication.getPrincipal().getUsername()} != ${accountUserName}">
+                        <form th:action="@{/profile/{accountID}(accountID=${accountID})}" method="POST" action="connections">
+                            <div th:if="${usersNotConnected} == true">
+                                <input class="btn btn-success ml-2" type="submit" value="Add as connection"></input>
+                            </div>
+                            <div th:unless="${usersNotConnected} == true">
+                                <input class="btn btn-danger ml-2" type="submit" value="Remove connection"></input>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="p-2 ml-5" th:if= "${#authentication.getPrincipal().getUsername()} == ${accountUserName}">
+                        <a class="btn btn-primary ml-5" th:text="Connections + ' ' + ${connectionsSize}" th:href="@{/connections}"></a>
+                    </div>
+                    <div class="p-2 ml-5" th:if= "${#authentication.getPrincipal().getUsername()} == ${accountUserName}">
+                        <a class="btn btn-primary ml-5" th:href="@{/addSkills}">Add a new skill!</a>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <h2>Top Skills</h2>
+                    <ul class="list-group">
+                        <li class="list-group-item" th:each="skill : ${skillsTop}">
+                            <span th:text="${'Skill: ' + skill.name}"/> <br/>
+                            <span th:text="${'Skill profiency: ' + skill.profiency}"/> <br/>
+                            <span th:text="${'Endorsments: ' + skill.endorsments}"/> <br/>
+                            <span th:text="${'Explanation: ' + skill.notes}"/> <br/>
+                            <div th:if= "${#authentication.getPrincipal().getUsername()} != ${accountUserName}">
+                                <form th:action="@{/profile/{skillName}/{userName}(skillName=${skill.name},userName=${accountID})}" method="POST" action="/skillName">
+                                    <input class="btn btn-success" type="submit" value="Endorse"></input>
+                                </form>
+                            </div>
+                        </li>
+                    </ul>
+                    <h3>Other skills</h3>
+                    <ol class="list-group">
+                        <li class="list-group-item" th:each="skill : ${skillsOthers}">
+                            <span th:text="${'Skill: ' + skill.name}"/> <br/>
+                            <span th:text="${'Skill profiency: ' + skill.profiency}"/> <br/>
+                            <span th:text="${'Endorsments: ' + skill.endorsments}"/> <br/>
+                            <span th:text="${'Explanation: ' + skill.notes}"/> <br/>
+                            <div th:if= "${#authentication.getPrincipal().getUsername()} != ${accountUserName}">
+                                <form th:action="@{/profile/{skillName}/{userName}(skillName=${skill.name},userName=${accountID})}" method="POST" action="/skillName">
+                                    <input class="btn btn-success" type="submit" value="Endorse"></input>
+                                </form>
+                            </div>
+                        </li>
+                    </ol>
+                </div>
+
+            </div>
+        </div>
+
+    </body>
+</html>

@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+    <head th:replace="fragments/fragments :: head" lang="en">
+        <title>Hello world</title>
+    </head>
+    <body>
+
+        
+        <div class="mx-auto container">
+            <h2>Register</h2>
+            <form method="POST" th:action="@{/sign-up}" th:object="${account}" enctype="multipart/form-data">
+                <table>
+                    <tr>
+                        <td>User Name</td>
+                        <td><input type="text" th:field="*{username}" class="form-control"/></td>
+                        <td th:if="${#fields.hasErrors('username')}" th:errors="*{username}">User name exists or is invalid</td>
+                    </tr>
+                    <tr>
+                        <td>Password</td>
+                        <td><input type="password" th:field="*{password}" class="form-control"/></td>
+                        <td th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Password is invalid</td>
+                    </tr>
+                    <tr>
+                        <td>Full name</td>
+                        <td><input type="text" th:field="*{name}" class="form-control"/></td>
+                        <td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name is missing or invalid</td>
+                    </tr>
+                    <tr>
+                        <td>Profile String</td>
+                        <td><input type="text" th:field="*{profileString}" class="form-control"/></td>
+                        <td th:if="${#fields.hasErrors('profileString')}" th:errors="*{profileString}">profile string already exists or is invalid</td>
+
+                    </tr>
+                    <tr>
+                        <td>Profile pic</td>
+                        <td><input type="file" name="file" class="form-control"/></td>
+                    </tr>
+                    <tr>
+                        <td>Create an Account</td>
+                        <td><input type="submit" class="ml-2 btn btn-primary"/></td>
+                    </tr>
+
+                </table>
+            </form>
+        </div>
+    </body>
+</html>

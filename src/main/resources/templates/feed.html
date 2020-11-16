@@ -1,0 +1,59 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+    <head th:replace="fragments/fragments :: head" lang="en">
+        <title>Hello world</title>
+    </head>
+    <body>
+
+        <nav th:replace="fragments/fragments :: navbar" lang="en"></nav>
+
+        <div class="mx-auto container">
+            <h2>Start a post</h2>
+            <form class="mx-auto" method="POST" th:action="@{/feed}" th:object="${message}" action="/postFeed">
+                <table>
+                    <tr>
+                        <td><textarea th:field="*{content}" class="form-control"/></td>
+                        <td th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Message can not be empty!</td>
+                        <td><input type="submit" value="make a post" class="btn btn-primary" style="margin-left: 20px"/></td>
+                    </tr>
+                </table>
+            </form>
+            
+            <h3>Posts from your connections</h3>
+            <ul class="list-group" th:each="post : ${posts}">
+                <li class="list-group-item" th:each="sender : ${post.sender}">
+                    <h5 th:text="'At: ' + ${#temporals.format(post.messageDate, 'dd.MM.yyyy HH:mm')}">msg</h5> <br/>
+                    <h4 th:text="${'Posted by: ' + sender.name}" >msg</h4> <br/>
+                    <h4 th:text="${post.content}">msg</h4> <br/>
+                    <h5 th:text=" ${'Likes: ' + post.likes}">msg</h5>
+                    <form th:action="@{/likeMessage/{postId}/{accountID}(postId=${post.id},accountID=${accountID})}" method="POST" name="messageLike">
+                        <input type="submit" value="Like"></input>
+                    </form>
+                    <div th:if="${not #lists.isEmpty(post.comments)}">
+                        <ul class="list-group" th:each="comment, iStat : ${post.comments}" th:if="${iStat.index < 10}">
+                            <li class="list-group-item" th:each="commentSender : ${comment.sender}">
+                                <span th:text="${#temporals.format(comment.messageDate, 'dd.MM.yyyy HH:mm')}">msg</span> <br/>
+                                <span th:text="${'Commented by: ' + commentSender.name}" >msg</span> <br/>
+                                <span th:text="${comment.content}">msg</span> <br/>
+                                <span th:text=" ${'Likes: ' + comment.likes}">msg</span>
+                                <form th:action="@{/likeComment/{commentId}/{accountID}(commentId=${comment.id},accountID=${accountID})}" method="POST" name="commentLike">
+                                    <input type="submit" value="Like"></input>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    <form method="POST" th:action="@{/feed/{postId}(postId=${post.id})}" th:object="${message}" action="/postFeed">
+                        <table>
+                            <tr>
+                                <td>Comment</td>
+                                <td><textarea type="text" th:field="*{content}" class="form-control ml-2"/></td>
+                                <td th:if="${#fields.hasErrors('content')}" th:errors="*{content}">Comment can not be empty!</td>
+                                <td><input type="submit" value="Comment" class="btn btn-primary" style="margin-left: 20px"/></td>
+                            </tr>
+                        </table>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </body>
+</html>

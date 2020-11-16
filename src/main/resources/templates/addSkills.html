@@ -1,0 +1,40 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+    <head th:replace="fragments/fragments :: head" lang="en">
+        <title>Hello world</title>
+    </head>
+    <body>
+
+
+        <nav th:replace="fragments/fragments :: navbar" lang="en"></nav>
+
+        <div class="mx-auto container">
+            <h1>Your skills</h1>
+            <ol>
+                <li th:each="skill : ${skills}">
+                    <span th:text="${'Skill: ' + skill.name + ' skill profiency: ' + skill.profiency + ' endorsments: ' + skill.endorsments}">msg</span>
+                </li>
+            </ol>
+
+            <form method="POST" th:action="@{/addSkills}" action="/addSkill">
+                <table>
+                    <tr>
+                        <td>Skill name</td>
+                        <td><input type="text" name="name"/></td>
+                    </tr>
+                    <tr>
+                        <td>How good are you on said skill on 1-10</td>
+                        <td><input type="number" name="profiency" min="1" max="10"/></td>
+                    </tr>
+                    <tr>
+                        <td>Explanation / notes regarding the skill</td>
+                        <td><input type="text" name="notes"/></td>
+                    </tr>
+                    <tr>
+                        <td><input class="m-5" type="submit" value="Add new Skill!"/></td>
+                    </tr>
+                </table>
+            </form>
+        </div>
+    </body>
+</html>

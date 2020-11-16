@@ -1,0 +1,37 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+    <head th:replace="fragments/fragments :: head" lang="en">
+        <title>Hello world</title>
+    </head>
+    <body>
+
+        <nav th:replace="fragments/fragments :: navbar" lang="en"></nav>
+
+        <div class="mx-auto container w-25">
+            <h2>Your connections</h2>
+            <ul class="list-group">
+                <li class="list-group-item" th:each="connection : ${connections}">
+                    <a th:text="${connection.name}" th:href="@{/profile/{profileString}(profileString=${connection.profileString})}"></a>
+                    <form th:action="@{/connections/{userID}/{confirm}(userID=${connection.id}, confirm=False)}" method="POST">
+                        <input class="btn btn-danger" type="submit" value="Remove connection"></input>
+                    </form>
+                </li>
+            </ul>
+
+            <h2>Your connection requests</h2>
+            <ul class="list-group">
+                <li class="list-group-item" th:each="connectionRequest : ${connectionRequests}">
+                    <a  th:href="@{/profile/{profileString}(profileString=${connectionRequest.profileString})} ">
+                        <h2 th:text="${connectionRequest.name}"/>
+                    </a>
+                    <form th:action="@{/connections/{userID}/{confirm}(userID=${connectionRequest.id}, confirm=True)}" method="POST">
+                        <input class="btn btn-success" type="submit" value="Connect with this user?"></input>
+                    </form>
+                    <form class="mt-5" th:action="@{/connections/{userID}/{confirm}(userID=${connectionRequest.id}, confirm=False)}" method="POST">
+                        <input class="btn btn-danger" type="submit" value="Deny connection?"></input>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </body>
+</html>

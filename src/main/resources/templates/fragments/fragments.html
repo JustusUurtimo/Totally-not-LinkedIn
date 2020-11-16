@@ -1,0 +1,52 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:fragment="head" lang="en">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"/>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no"/>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+        <title>TNLI</title>
+        <style type="text/css">
+            body { background: #E8E8E8!important; } /* Adding !important forces the browser to overwrite the default style applied by Bootstrap */
+        </style>
+
+
+    </head>
+    <body>
+        <nav th:fragment="navbar" class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <h3 class="navbar-text">
+                TNLI
+            </h3>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item"><a class="nav-link" th:href="@{/profile}">Profile</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/feed}">Feed!</a></li>
+                    <li class="nav-item"><a class="nav-link" th:href="@{/connections}">Network</a></li>  
+                    <li class="nav-item">
+                        <div class="navbar-form navbar-right">
+                            <form class="form-inline"  th:action="@{/searchedAccounts}" method="POST" action="/searchedAccounts">
+                                <div class="form-group">
+                                    <input class="form-control" type="text" name="searchedAccounts" placeholder="Search users"/>
+                                </div>
+                            </form>
+                        </div>
+                    </li>
+                </ul>
+                <div class="navbar-form navbar-right">
+                    <form th:action="@{/logout}" method="POST">
+                        <input class="btn btn-danger navbar-btn" type="submit" value="Logout"></input>
+                    </form>
+                </div>
+
+
+            </div>  
+        </nav>
+
+
+    </body>
+</html>

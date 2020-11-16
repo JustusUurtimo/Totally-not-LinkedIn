@@ -1,0 +1,30 @@
+<!DOCTYPE HTML>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.springframework.org/security/tags">
+    <head th:replace="fragments/fragments :: head" lang="en">
+        <title>Hello world</title>
+    </head>
+    <body>
+
+        <nav th:replace="fragments/fragments :: navbar" lang="en"></nav>
+        <div class="container">
+            <h1>Found people</h1>
+            <div th:each="account : ${accounts}">
+                <div class="m-5">
+                    <div class="w-100" th:if="${account.profilePicture != null}" >
+                        <h2 th:text="${account.name}"/>
+                        <!--source on this: https://stackoverflow.com/questions/17772857/how-to-display-jpg-from-db-web-page-->
+                        <a th:href="@{/profile/{profileString}(profileString=${account.profileString})}">
+                            <img th:src="@{'data:image/jpg;base64,' + *{T(org.springframework.util.Base64Utils).encodeToString(account.profilePicture)}}" class="rounded-circle w-25"/>
+                        </a>
+                    </div>
+                    <div class="w-100" th:if="${account.profilePicture == null}" >
+                        <h2 th:text="${account.name}"/>
+                        <a th:href="@{/profile/{profileString}(profileString=${account.profileString})}">
+                            <img th:src="@{/images/image.png}" class="rounded-circle w-25"/>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
