@@ -13,3 +13,4 @@ It has come to my knowledge that the password validator can be a bit asshole, if
 
 I have the app running at Heroku : https://sheltered-peak-64721.herokuapp.com/sign-in
 I will empty the database every now and then.
+You can use password: ILoveCodingWith#Spring1
