@@ -6,7 +6,6 @@ This was project for course https://web-palvelinohjelmointi-20.mooc.fi/ (the cou
 Most aspects should works properly at the moment. 
 If the web page takes long to load or seems sluggish at start it just means that it has not been opened for a while.
 
-Notes for the future
-Getting messages to posts still has n+1 problem, but as of now I don't have time to fix it.
-Project has no automated tests, but I will try to impliment them in the future.
+Notes for the use:
+
 It has come to my knowledge that the password validator can be a bit harsh, if you have problems try this: ILoveChocolateCookies#4Ever
